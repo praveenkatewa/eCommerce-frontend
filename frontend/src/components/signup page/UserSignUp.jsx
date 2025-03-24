@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+
 const UserSignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phoneNumber: "",
+    role: "user",
   });
 
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const UserSignUp = () => {
       });
     }
     catch (err) {
-      console.log
+      console.log(err);
     } 
   };
 
@@ -97,6 +99,21 @@ const UserSignUp = () => {
             />
           </div>
 
+          {/* Role Selection */}
+          <div>
+            <label className="block text-gray-700 font-medium">Role</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              <option value="user">User</option>
+              <option value="supplier">Supplier</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
           {/* Signup Button */}
           <button
             type="submit"
@@ -116,7 +133,7 @@ const UserSignUp = () => {
 
         {/* Sign-in Link */}
         <p className="text-sm text-gray-600 mt-4">
-          Already have an account?{" "}
+          Already have an account? {" "}
           <a href="/login" className="text-yellow-600 hover:underline">
             Log in
           </a>
