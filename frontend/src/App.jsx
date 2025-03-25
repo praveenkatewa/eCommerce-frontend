@@ -10,6 +10,9 @@ import UpdatePassword from "./components/signup page/Update_password.jsx";
 import SupplierSignUp from "./components/signup page/Supplier.jsx";
 
 
+import UserView from "./components/Product page/UserView.jsx";
+
+
 import "./App.css";
 import "./index.css";
 
@@ -26,6 +29,10 @@ function App() {
         <Route path="/UpdatePassword" element={<UpdatePassword />} />
        
         <Route path="/Supplier" element={<SupplierSignUp />} />
+
+        <Route path="/UserView" element={<UserView />} />
+
+
       </Routes>
     </Router>
   );

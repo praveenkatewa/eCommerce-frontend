@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SupplierSignUp = () => {
   const [formData, setFormData] = useState({
@@ -8,17 +10,25 @@ const SupplierSignUp = () => {
     contactNumber: "",
     gstNo: "",
     category: "",
-    aadharCardNo: "",
+    password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const response = await axios.post("http://localhost:3000/supplier/supplierSignup", formData);
+      alert(response.data.message);
+      navigate("/login");
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -115,15 +125,15 @@ const SupplierSignUp = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium">Aadhar Card No.</label>
+            <label className="block text-gray-700 font-medium">Password</label>
             <input
-              type="text"
-              name="aadharCardNo"
-              value={formData.aadharCardNo}
+              type="password"
+              name="password"
+              value={formData.password}
               onChange={handleChange}
               required
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter Aadhar card number"
+              placeholder="Enter password"
             />
           </div>
 

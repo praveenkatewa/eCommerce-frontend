@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UpdatePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -7,25 +8,46 @@ const UpdatePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (newPassword !== confirmPassword) {
       alert("New password and confirm password do not match");
       return;
     }
-    console.log("Password updated successfully");
-    navigate("/login");
+
+    try {
+      const response = await axios.put(
+        "http://localhost:3000/ecom/updatepassword",
+        { newPassword, currentPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      alert(response.data.message);
+      navigate("/login");
+    } catch (error) {
+      console.error("Error updating password:", error);
+      console.log("token",localStorage.getItem("token"))
+      alert(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 shadow-lg rounded-lg w-96">
-        <h1 className="text-2xl font-bold text-gray-800 text-center mb-4">Update Password</h1>
+        <h1 className="text-2xl font-bold text-gray-800 text-center mb-4">
+          Update Password
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Current Password */}
           <div>
-            <label className="block text-gray-700 font-medium">Current Password</label>
+            <label className="block text-gray-700 font-medium">
+              Current Password
+            </label>
             <input
               type="password"
               value={currentPassword}
@@ -38,7 +60,9 @@ const UpdatePassword = () => {
 
           {/* New Password */}
           <div>
-            <label className="block text-gray-700 font-medium">New Password</label>
+            <label className="block text-gray-700 font-medium">
+              New Password
+            </label>
             <input
               type="password"
               value={newPassword}
@@ -51,7 +75,9 @@ const UpdatePassword = () => {
 
           {/* Confirm New Password */}
           <div>
-            <label className="block text-gray-700 font-medium">Confirm New Password</label>
+            <label className="block text-gray-700 font-medium">
+              Confirm New Password
+            </label>
             <input
               type="password"
               value={confirmPassword}
@@ -75,7 +101,7 @@ const UpdatePassword = () => {
         <p className="text-sm text-gray-600 mt-4 text-center">
           Changed your mind?{" "}
           <a href="/login" className="text-yellow-600 hover:underline">
-          Log In
+            Log In
           </a>
         </p>
       </div>
